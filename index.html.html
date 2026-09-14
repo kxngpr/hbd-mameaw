@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Surprise</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #ffe6ee;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      position: relative;
+    }
+
+    /* กล่องข้อความทายวัน */
+    .intro-card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 35px 30px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(255, 105, 180, 0.15);
+      text-align: center;
+      width: 88%;
+      max-width: 420px;
+      border: 1px solid #ffd1dc;
+      z-index: 10;
+      transition: all 0.4s ease;
+    }
+
+    .intro-title {
+      color: #ff477e;
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .intro-subtitle {
+      color: #725e64;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .profile-img-intro {
+      width: 170px;
+      height: 170px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #ff477e;
+      margin: 10px auto 15px auto;
+      display: block;
+      box-shadow: 0 8px 20px rgba(255, 71, 126, 0.2);
+    }
+
+    .bday-date {
+      display: inline-block;
+      background-color: #ff477e;
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    .action-btn {
+      background-color: #ff477e;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      font-size: 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+      box-shadow: 0 4px 12px rgba(255, 71, 126, 0.3);
+    }
+
+    .action-btn:hover {
+      transform: scale(1.05);
+      background-color: #ff2a6d;
+    }
+
+    /* กล่องแสดงเค้ก / จดหมาย */
+    .interactive-box {
+      position: relative;
+      cursor: pointer;
+      width: 420px;
+      max-width: 85vw;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease, width 0.4s ease;
+      z-index: 5;
+      display: none;
+      opacity: 0;
+    }
+
+    .interactive-box:hover {
+      transform: scale(1.04);
+    }
+
+    .main-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 12px 25px rgba(0,0,0,0.12));
+    }
+
+    .hint-text {
+      margin-top: 25px;
+      color: #ff7096;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      animation: pulse 1.8s infinite;
+      z-index: 5;
+      display: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* การ์ดข้อความ HBD */
+    .card-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -40%) scale(0.9);
+      background: rgba(255, 255, 255, 0.98);
+      padding: 30px 25px;
+      border-radius: 28px;
+      box-shadow: 0 20px 40px rgba(255, 105, 180, 0.25);
+      text-align: center;
+      width: 88%;
+      max-width: 440px;
+      max-height: 80vh;
+      overflow-y: auto;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 100;
+      border: 2px solid #fff;
+    }
+
+    .card-message.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: auto;
+    }
+
+    .name-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffe6ee;
+      padding: 4px 16px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      border: 1px solid #ffccd5;
+    }
+
+    .name-badge span {
+      color: #ff477e;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+
+    .card-message h1 {
+      color: #ff477e;
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      font-weight: 800;
+    }
+
+    .card-message p {
+      color: #5c4b51;
+      font-size: 0.92rem;
+      line-height: 1.75;
+      text-align: left;
+    }
+
+    /* วงแหวนหมุนรูปถ่าย 5 รูป */
+    .orbit-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 100vh;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 105;
+      display: none;
+    }
+
+    .orbit-item {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      margin-left: -60px;
+      margin-top: -60px;
+      border-radius: 50%;
+      border: 4px solid #ffffff;
+      box-shadow: 0 10px 25px rgba(255, 71, 126, 0.35);
+      object-fit: cover;
+      opacity: 0;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: opacity 1s ease, transform 0.3s ease;
+      animation: rotateOrbit 14s linear infinite;
+    }
+
+    .orbit-item:hover {
+      box-shadow: 0 12px 30px rgba(255, 71, 126, 0.6);
+    }
+
+    @keyframes rotateOrbit {
+      from {
+        transform: rotate(calc(var(--i) * 72deg)) translateY(-280px) rotate(calc(var(--i) * -72deg));
+      }
+      to {
+        transform: rotate(calc(var(--i) * 72deg + 360deg)) translateY(-280px) rotate(calc(var(--i) * -72deg - 360deg));
+      }
+    }
+
+    /* ป๊อปอัพขยายรูปพร้อมคำอวยพร */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 24px;
+      text-align: center;
+      max-width: 330px;
+      width: 85%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      transform: scale(0.8);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 3px solid #ffccd5;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-img {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+      margin-bottom: 15px;
+    }
+
+    .modal-caption {
+      color: #ff477e;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .close-btn {
+      background-color: #ff477e;
+      color: white;
+      border: none;
+      padding: 8px 22px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 71, 126, 0.3);
+    }
+
+    /* เลเยอร์แอนิเมชันดอกไม้ */
+    .flower-item {
+      position: absolute;
+      width: 320px;
+      height: auto;
+      pointer-events: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      animation: bloomClockwise 1.6s ease-out forwards, fallDown 3.5s ease-in forwards;
+    }
+
+    @keyframes bloomClockwise {
+      0% {
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        opacity: 0;
+      }
+      35% { opacity: 1; }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(var(--s)) rotate(var(--r));
+        opacity: 1;
+      }
+    }
+
+    @keyframes fallDown {
+      0% {
+        transform: translate(var(--tx), var(--ty)) scale(var(--s)) rotate(var(--r));
+        opacity: 1;
+      }
+      75% { opacity: 0.9; }
+      100% {
+        transform: translate(calc(var(--tx) + var(--drift)), calc(var(--ty) + 120vh)) scale(calc(var(--s) * 0.85)) rotate(calc(var(--r) + 200deg));
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ตัวเล่นเพลง -->
+  <audio id="bgMusic" src="khongkwan_thetoys.mp3" preload="auto"></audio>
+
+  <!-- หน้าการ์ดเกริ่นนำ -->
+  <div class="intro-card" id="introCard">
+    <div class="intro-title" id="introTitle">เอ๊ะ... วันนี้วันอะไรน้าาา? 🤔</div>
+    <div class="intro-subtitle" id="introSubtitle">อ๋อออ วันจันทร์ไง! ปะ ไปทำงานกันเถอะ... 💼</div>
+    <div id="photoContainer"></div>
+    <button class="action-btn" id="nextBtn">ถัดไป ➔</button>
+  </div>
+
+  <!-- กล่องแสดงเค้ก / จดหมาย -->
+  <div class="interactive-box" id="interactiveBox">
+    <img id="mainImg" class="main-img" src="cake_1.png" alt="Birthday Cake">
+  </div>
+  
+  <div class="hint-text" id="hint">🎂 แตะที่เค้กเพื่อเป่าเทียน!</div>
+
+  <!-- รูปหมุนวนรอบการ์ด (5 รูป) -->
+  <div class="orbit-container" id="orbitContainer">
+    <img src="1.png" class="orbit-item" style="--i:0;" alt="Photo 1" onclick="openPhotoModal('1.png', 'ยิ้มเยอะๆ ในทุกวันนะคนเก่ง 😊')">
+    <img src="2.png" class="orbit-item" style="--i:1;" alt="Photo 2" onclick="openPhotoModal('2.png', 'ขอให้ถูกห้อมล้อมไปด้วยความรักและความสุข 💖')">
+    <img src="3.png" class="orbit-item" style="--i:2;" alt="Photo 3" onclick="openPhotoModal('3.png', 'ค้นพบความสุขในสิ่งเล็กๆ เสมอนะ ✨')">
+    <img src="4.png" class="orbit-item" style="--i:3;" alt="Photo 4" onclick="openPhotoModal('4.png', 'เป็นรอยยิ้มที่สดใสแบบนี้ตลอดไปเลยนะ 🌸')">
+    <img src="5.png" class="orbit-item" style="--i:4;" alt="Photo 5" onclick="openPhotoModal('5.png', 'ขอให้ทุกความปรารถนาเป็นจริงนะเจ้าเหมี่ยว 🎂')">
+  </div>
+
+  <!-- การ์ดข้อความ HBD (อัปเดตข้อความใหม่) -->
+  <div class="card-message" id="cardMessage">
+    <div class="name-badge">
+      <span>🍃 Mameaw</span>
+    </div>
+    <h1>Happy Birthday คับมะเหมี่ยว </h1>
+    <p>
+      Happy birthday นะคับมะเหมี่ยว เขินๆ นิดๆ ไม่เคยทำอะไรแบบนี้ 55665555<br>
+      แล้วเก่งก็ไม่มีของขวัญอะไรจะให้เลย อวยพรก็ไม่เก่ง แต่เก่งตั้งใจทำอันนี้ให้มะเหมี่ยวเลยนะ!<br>
+      เก่งขอให้มะเหมี่ยวมีความสุขมากๆ สุขภาพก็แข็งแรง (5565555 คำอวยพรยอดฮิตมั้ยนะอันนี้) แต่เก่งก็อยากอวยพรนะ<br>
+      แล้วก็เก่งอยากให้มะเหมี่ยวอยู่กับเก่งแบบนี้ไปนานๆ เรื่อยๆ เลย แต่อยากให้เป็นเรื่อยๆ ที่พัฒนาขึ้นนะ เก่งคุยกับมะเหมี่ยวแล้วมีความสุขมาก แฮปปี้สุดๆ ถึงจะบอกไปเยอะแล้วก็เถอะ แต่ก็ยังอยากบอกนะ มะเหมี่ยวอย่าเพิ่งเบื่อกันนะ <br>
+      แล้วเก่งก็ขอให้มะเหมี่ยวเป็นผักใบสีเขียวในทู๊กกกกวันเลย ขอให้ภูมิแพ้หายไปเลยด้วย ไอกระเพาะปัสสาวะอักเสบก็หายด้วย อะไรไม่ดีออกไปให้หมดๆ เลย!<br>
+      นึกไม่ออกแล้วแฮะ 5555566 ก็ขอให้มะเหมี่ยวมีความสุขมากๆ นะคับ อยู่ด้วยกันไปนานๆ นะ ถึงจะไม่เกี่ยวกับวันเกิดก็เถอะ 556555<br>
+      <b>เก่งชอบมะเหมี่ยวมากๆๆๆๆ Happy birthday คับมะเหมี่ยว ❤️</b>
+    </p>
+  </div>
+
+  <!-- ป๊อปอัพโชว์รูปขยาย + คำอวยพร -->
+  <div class="modal-overlay" id="photoModal" onclick="closePhotoModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <img id="modalImg" class="modal-img" src="" alt="Expanded Photo">
+      <div id="modalCaption" class="modal-caption"></div>
+      <button class="close-btn" onclick="closePhotoModal()">ปิด ✖</button>
+    </div>
+  </div>
+
+  <script>
+    const introCard = document.getElementById('introCard');
+    const introTitle = document.getElementById('introTitle');
+    const introSubtitle = document.getElementById('introSubtitle');
+    const photoContainer = document.getElementById('photoContainer');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const interactiveBox = document.getElementById('interactiveBox');
+    const mainImg = document.getElementById('mainImg');
+    const hint = document.getElementById('hint');
+    const cardMessage = document.getElementById('cardMessage');
+    const orbitContainer = document.getElementById('orbitContainer');
+    const bgMusic = document.getElementById('bgMusic');
+
+    const photoModal = document.getElementById('photoModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalCaption = document.getElementById('modalCaption');
+
+    const flowerSrcs = [
+      'flower_1.png', 'flower_2.png', 'flower_3.png', 'flower_4.png',
+      'flower_5.png', 'flower_6.png', 'flower_7.png', 'flower_8.png'
+    ];
+
+    let introStep = 0;
+    let mainStep = 0;
+
+    nextBtn.addEventListener('click', () => {
+      bgMusic.play().catch(() => {});
+
+      if (introStep === 0) {
+        introStep = 1;
+        introTitle.innerText = "เฮ้ย ไม่ใช่สิ! 🤪";
+        introSubtitle.innerHTML = "วันนี้วันเกิดคนน่ารักคนนี้ต่างหาก!";
+        
+        photoContainer.innerHTML = `
+          <img src="4.png" class="profile-img-intro" alt="Birthday Person">
+          <div class="bday-date">🎂 28 กันยายน 2546</div>
+        `;
+        
+        nextBtn.innerText = "ไปเป่าเค้กกัน! 🎂";
+        return;
+      }
+
+      if (introStep === 1) {
+        introCard.style.opacity = '0';
+        
+        setTimeout(() => {
+          introCard.style.display = 'none';
+          interactiveBox.style.display = 'block';
+          hint.style.display = 'block';
+
+          setTimeout(() => {
+            interactiveBox.style.opacity = '1';
+          }, 50);
+        }, 400);
+      }
+    });
+
+    interactiveBox.addEventListener('click', () => {
+      if (mainStep === 0) {
+        mainStep = 1;
+        mainImg.src = 'cake_2.png';
+        hint.innerText = '✨ อธิษฐานสำเร็จแล้ว!';
+
+        setTimeout(() => {
+          interactiveBox.style.opacity = '0';
+          
+          setTimeout(() => {
+            mainStep = 2;
+            mainImg.src = 'image_c65a01.png';
+            interactiveBox.style.width = '480px';
+            hint.innerText = '✉️ มีจดหมายซ่อนอยู่ แตะเพื่อเปิดเลย!';
+            interactiveBox.style.opacity = '1';
+          }, 500);
+
+        }, 1500);
+
+        return;
+      }
+
+      if (mainStep === 2) {
+        mainStep = 3;
+        hint.style.opacity = '0';
+        mainImg.src = 'image_c65cc2.png';
+
+        setTimeout(() => {
+          spawnClockwiseFlowers();
+
+          setTimeout(() => {
+            cardMessage.classList.add('show');
+            showOrbitPhotos();
+          }, 3200);
+
+        }, 100);
+      }
+    });
+
+    function showOrbitPhotos() {
+      orbitContainer.style.display = 'block';
+      const items = document.querySelectorAll('.orbit-item');
+      items.forEach((item) => {
+        item.style.opacity = '1';
+      });
+    }
+
+    function openPhotoModal(imgSrc, caption) {
+      modalImg.src = imgSrc;
+      modalCaption.innerText = caption;
+      photoModal.classList.add('active');
+    }
+
+    function closePhotoModal() {
+      photoModal.classList.remove('active');
+    }
+
+    function spawnClockwiseFlowers() {
+      const totalLayers = 8;
+      const flowersPerLayer = 18;
+      let delay = 0;
+
+      for (let layer = 0; layer <= totalLayers; layer++) {
+        const radius = layer * (Math.max(window.innerWidth, window.innerHeight) * 0.055);
+
+        for (let i = 0; i < flowersPerLayer; i++) {
+          const img = document.createElement('img');
+          const randomSrc = flowerSrcs[Math.floor(Math.random() * flowerSrcs.length)];
+          img.src = randomSrc;
+          img.classList.add('flower-item');
+
+          const angle = (i / flowersPerLayer) * (Math.PI * 2);
+          const tx = (Math.cos(angle) * radius) + 'px';
+          const ty = (Math.sin(angle) * radius) + 'px';
+          const scale = (Math.random() * 0.8 + 1.2).toFixed(2);
+          const rotate = (Math.random() * 360) + 'deg';
+          const drift = (Math.random() * 180 - 90) + 'px';
+
+          img.style.setProperty('--tx', tx);
+          img.style.setProperty('--ty', ty);
+          img.style.setProperty('--s', scale);
+          img.style.setProperty('--r', rotate);
+          img.style.setProperty('--drift', drift);
+
+          img.style.zIndex = 10 + layer;
+          img.style.animationDelay = `${delay}s, ${delay + 2.0}s`;
+
+          document.body.appendChild(img);
+          delay += 0.022;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
