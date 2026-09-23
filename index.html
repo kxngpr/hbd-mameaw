@@ -502,6 +502,7 @@
       pointer-events: none;
       z-index: 400;
       opacity: 0;
+      object-fit: contain;
       will-change: transform, opacity;
       animation: flowerBloom 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
@@ -835,7 +836,7 @@
       const arms = 3;             // จำนวนแขนเกลียว
       const stepAngle = 0.6;      // มุมต่อรอบ (เรเดียน) ยิ่งมากเกลียวยิ่งแน่น
       const interval = 60;        // ms ระหว่างแต่ละดอก ยิ่งมากยิ่งบานช้า
-      const holdTime = 5000;      // ค้างเต็มจอ 5 วินาทีก่อนเริ่มร่วง
+      const holdTime = 2500;      // ค้างเต็มจอ 2.5 วินาทีก่อนเริ่มร่วง
 
       const maxR = Math.hypot(window.innerWidth, window.innerHeight) * 0.5;
       const flowers = [];
@@ -849,7 +850,7 @@
 
         const t = i / total;
         const angle = Math.floor(i / arms) * stepAngle + (i % arms) * (2 * Math.PI / arms);
-        const r = maxR * Math.pow(t, 0.8) + (Math.random() - 0.5) * 40;
+        const r = maxR * Math.pow(t, 0.8);
 
         const x = r * Math.cos(angle);
         const y = r * Math.sin(angle);
@@ -859,8 +860,8 @@
         img.classList.add('flower-item');
         img.style.setProperty('--tx', `${x}px`);
         img.style.setProperty('--ty', `${y}px`);
-        img.style.setProperty('--s', `${1.4 + Math.random() * 1.1}`);
-        img.style.setProperty('--rot', `${(angle * 180 / Math.PI) % 360 + Math.random() * 40}deg`);
+        img.style.setProperty('--s', `${1.7 + Math.random() * 0.4}`);
+        img.style.setProperty('--rot', `${(angle * 180 / Math.PI) % 360}deg`);
 
         document.body.appendChild(img);
         flowers.push(img);
