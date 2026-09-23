@@ -31,7 +31,6 @@
       position: relative;
     }
 
-    /* ปุ่มควบคุมเพลง */
     .music-control {
       position: fixed;
       top: 15px;
@@ -80,7 +79,6 @@
       font-weight: 600;
     }
 
-    /* หน้า Intro */
     .intro-card {
       background: transparent;
       padding: 0;
@@ -159,7 +157,6 @@
       background-color: #ff2a6d;
     }
 
-    /* โซนเค้กและจดหมาย */
     .interactive-box {
       position: relative;
       cursor: pointer;
@@ -171,7 +168,6 @@
       opacity: 0;
     }
 
-    /* ปรับอนิเมชันจดหมายหล่นให้ช้า นุ่มนวล สมูท */
     .interactive-box.fall-together {
       animation: letterFallDown 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
@@ -207,7 +203,6 @@
       50% { opacity: 1; }
     }
 
-    /* การ์ดข้อความอวยพร */
     .card-message {
       position: fixed;
       top: 50%;
@@ -314,7 +309,6 @@
       background-color: #ff2a6d;
     }
 
-    /* หน้าสุดท้าย: รูปรวม + สไลด์แถบบนล่าง */
     .final-page {
       position: fixed;
       top: 0;
@@ -429,7 +423,6 @@
       transform: scale(1.08);
     }
 
-    /* Modal แสดงรูปขยาย */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -497,7 +490,7 @@
       box-shadow: 0 4px 10px rgba(255, 71, 126, 0.3);
     }
 
-    /* สไตล์ดอกไม้: ใหญ่ยักษ์ กระจายแน่นเต็มหน้าจอสมบูรณ์แบบ */
+    /* ดอกไม้: บานเป็นเกลียวตามเข็ม แล้วร่วงลง */
     .flower-item {
       position: fixed;
       width: 250px;
@@ -508,25 +501,35 @@
       margin-left: -125px;
       pointer-events: none;
       z-index: 400;
+      opacity: 0;
       will-change: transform, opacity;
-      animation: popBloom 3.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation: flowerBloom 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
 
-    @keyframes popBloom {
+    @keyframes flowerBloom {
       0% {
-        transform: translate(var(--tx), var(--ty)) scale(0) rotate(0deg);
         opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(0) rotate(calc(var(--rot) - 180deg));
       }
-      22% {
+      100% {
         opacity: 1;
+        transform: translate(var(--tx), var(--ty)) scale(var(--s)) rotate(var(--rot));
       }
-      72% {
+    }
+
+    .flower-item.fall {
+      animation: flowerFall var(--fd) cubic-bezier(0.55, 0, 1, 0.45) var(--fdelay) both;
+    }
+
+    @keyframes flowerFall {
+      0% {
         opacity: 1;
         transform: translate(var(--tx), var(--ty)) scale(var(--s)) rotate(var(--rot));
       }
       100% {
-        opacity: 0;
-        transform: translate(var(--tx), var(--ty)) scale(calc(var(--s) * 1.18)) rotate(calc(var(--rot) + 40deg));
+        opacity: 1;
+        transform: translate(calc(var(--tx) + var(--drift)), calc(var(--ty) + 140vh))
+                   scale(var(--s)) rotate(calc(var(--rot) + var(--spin)));
       }
     }
 
@@ -542,17 +545,15 @@
 
   <audio id="bgMusic" src="khongkwan_thetoys.mp3" loop preload="auto"></audio>
 
-  <!-- ปุ่มเปิดปิดเพลง -->
   <div class="music-control" id="musicBtn">
     <div class="vinyl-disc" id="vinylDisc"></div>
     <span class="music-text" id="musicStatus">🎵 เล่นเพลง</span>
   </div>
 
-  <!-- หน้าแรก (ปฏิทิน -> รูปโปรไฟล์) -->
   <div class="intro-card" id="introCard">
     <div class="intro-title" id="introTitle">เอ๊ะ... วันนี้วันอะไรน้าาาา</div>
     <div class="intro-subtitle" id="introSubtitle">อ๋อออ วันจันทร์นี่นาา ได้เวลาไปทำงานน </div>
-    
+
     <div id="photoContainer">
       <img src="sep.png" class="calendar-img-intro" alt="September Calendar">
     </div>
@@ -560,14 +561,12 @@
     <button class="action-btn" id="nextBtn">ถัดไป ➔</button>
   </div>
 
-  <!-- หน้าเค้กและจดหมาย -->
   <div class="interactive-box" id="interactiveBox">
     <img id="mainImg" class="main-img" src="cake_1.png" alt="Birthday Cake">
   </div>
-  
+
   <div class="hint-text" id="hint"> แตะที่เค้กเพื่อเป่าเทียน อธิษฐานก่อนเป่าด้วยนะ </div>
 
-  <!-- การ์ดข้อความอวยพร + ตัวนับเวลา -->
   <div class="card-message" id="cardMessage">
     <div class="time-counter-box">
       <div class="time-counter-title"> มะเหมี่ยวใช้ชีวิตอย่างดีมาแล้ว </div>
@@ -589,7 +588,6 @@
     <button class="next-final-btn" onclick="showFinalPage()">มีอะไรจะบอกอีกนิด ➔</button>
   </div>
 
-  <!-- หน้าสุดท้าย: รูปรวม + แถบสไลด์ภาพวน -->
   <div class="final-page" id="finalPage">
     <div class="slider-strip">
       <div class="slider-track slide-top">
@@ -610,7 +608,7 @@
 
     <div class="center-photo-container">
       <img src="us_photo.png" class="center-photo" alt="Us Photo">
-      
+
       <svg class="curved-text-svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet">
         <path id="textCurve" d="M 200,140 Q 500,30 800,150" fill="transparent" />
         <text class="curved-text">
@@ -637,7 +635,6 @@
     </div>
   </div>
 
-  <!-- Popup ดูรูปใหญ่ -->
   <div class="modal-overlay" id="photoModal" onclick="closePhotoModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
       <img id="modalImg" class="modal-img" src="" alt="Expanded Photo">
@@ -706,18 +703,18 @@
         introStep = 1;
         introTitle.innerText = "เอ้ย ไม่ช่ายยย! ";
         introSubtitle.innerText = "วันนี้วันเกิดคนนี้ต่างหากก";
-        
+
         photoContainer.innerHTML = `
           <img src="4.png" class="profile-img-intro" alt="Birthday Person">
         `;
-        
+
         nextBtn.innerText = " ไปเป่าเค้กกัน ➔";
         return;
       }
 
       if (introStep === 1) {
         introCard.style.opacity = '0';
-        
+
         setTimeout(() => {
           introCard.style.display = 'none';
           interactiveBox.style.display = 'block';
@@ -740,7 +737,7 @@
 
         setTimeout(() => {
           interactiveBox.style.opacity = '0';
-          
+
           setTimeout(() => {
             mainStep = 2;
             mainImg.src = 'image_c65a01.png';
@@ -759,19 +756,17 @@
         hint.style.display = 'none';
         mainImg.src = 'image_c65cc2.png';
 
-        // 1. ดอกไม้บานทะลักแน่นเต็มทั่วทั้งหน้าจอ (รวมตรงกลางด้วย)
-        spawnBigFlowers();
-
-        // 2. พอดอกไม้บานแน่นเต็มจอแล้ว ค่อยๆ ให้รูปจดหมายคล้อยหล่นช้าๆ สมูทๆ
-        setTimeout(() => {
-          interactiveBox.classList.add('fall-together');
-        }, 1800);
-
-        // 3. รอให้รูปจดหมายหล่นลับตาหายไปทั้งหมดก่อน ค่อยขึ้นข้อความการ์ดอวยพร
-        setTimeout(() => {
-          cardMessage.classList.add('show');
-          startDetailedTimer();
-        }, 5100);
+        spawnSpiralFlowers(
+          // ตอนดอกไม้เริ่มร่วง ให้จดหมายร่วงไปด้วยกัน
+          () => interactiveBox.classList.add('fall-together'),
+          // ดอกไม้ร่วงหมดแล้ว ค่อยขึ้นข้อความอวยพร
+          () => {
+            setTimeout(() => {
+              cardMessage.classList.add('show');
+              startDetailedTimer();
+            }, 300);
+          }
+        );
       }
     });
 
@@ -834,44 +829,72 @@
       photoModal.classList.remove('active');
     }
 
-    /* สคริปต์กระจายดอกไม้แน่นเต็มทั่วทั้งหน้าจอ (ตรงกลาง + ขอบ) อย่างสมูท */
-    function spawnBigFlowers() {
-      const totalFlowers = 220;
-      let count = 0;
+    /* ดอกไม้บานเป็นเกลียวตามเข็มนาฬิกา -> ค้างเต็มจอ -> ร่วงลงพร้อมจดหมาย -> เรียก onDone */
+    function spawnSpiralFlowers(onFallStart, onDone) {
+      const total = 160;          // จำนวนดอกไม้
+      const arms = 3;             // จำนวนแขนเกลียว
+      const stepAngle = 0.6;      // มุมต่อรอบ (เรเดียน) ยิ่งมากเกลียวยิ่งแน่น
+      const interval = 60;        // ms ระหว่างแต่ละดอก ยิ่งมากยิ่งบานช้า
+      const holdTime = 5000;      // ค้างเต็มจอ 5 วินาทีก่อนเริ่มร่วง
 
-      function createFlower() {
-        if (count >= totalFlowers) return;
+      const maxR = Math.hypot(window.innerWidth, window.innerHeight) * 0.5;
+      const flowers = [];
+      let i = 0;
+
+      function bloom() {
+        if (i >= total) {
+          setTimeout(startFall, holdTime);
+          return;
+        }
+
+        const t = i / total;
+        const angle = Math.floor(i / arms) * stepAngle + (i % arms) * (2 * Math.PI / arms);
+        const r = maxR * Math.pow(t, 0.8) + (Math.random() - 0.5) * 40;
+
+        const x = r * Math.cos(angle);
+        const y = r * Math.sin(angle);
 
         const img = document.createElement('img');
-        img.src = flowerSrcs[count % flowerSrcs.length];
+        img.src = flowerSrcs[i % flowerSrcs.length];
         img.classList.add('flower-item');
-
-        /* กระจายตำแหน่งทั่วหน้าจอแบบวงกลมแน่นๆ ตั้งแต่รัศมี 0 (ตรงกลาง) ถึง ขอบสุด */
-        const angle = Math.random() * 360; 
-        const maxRadius = Math.max(window.innerWidth, window.innerHeight) * 0.65;
-        const radius = Math.sqrt(Math.random()) * maxRadius; // กระจายความหนาแน่นเท่ากันทุกจุด
-
-        const x = radius * Math.cos(angle * Math.PI / 180);
-        const y = radius * Math.sin(angle * Math.PI / 180);
-
-        const scale = 1.4 + Math.random() * 1.1; // สุ่มขนาดให้มิติสมจริง
-
         img.style.setProperty('--tx', `${x}px`);
         img.style.setProperty('--ty', `${y}px`);
-        img.style.setProperty('--s', `${scale}`);
-        img.style.setProperty('--rot', `${Math.random() * 360}deg`);
+        img.style.setProperty('--s', `${1.4 + Math.random() * 1.1}`);
+        img.style.setProperty('--rot', `${(angle * 180 / Math.PI) % 360 + Math.random() * 40}deg`);
 
         document.body.appendChild(img);
+        flowers.push(img);
 
-        setTimeout(() => {
-          img.remove();
-        }, 3500);
-
-        count++;
-        setTimeout(createFlower, 18); // จังหวะการทยอยบาน
+        i++;
+        setTimeout(bloom, interval);
       }
 
-      createFlower();
+      function startFall() {
+        if (onFallStart) onFallStart();
+
+        let remaining = flowers.length;
+
+        flowers.forEach((el, idx) => {
+          const drift = (Math.random() - 0.5) * 160;
+          const spin = (Math.random() < 0.5 ? -1 : 1) * (90 + Math.random() * 180);
+
+          el.style.setProperty('--fd', `${1.8 + Math.random() * 0.6}s`);
+          el.style.setProperty('--fdelay', `${(idx / flowers.length) * 1.2 + Math.random() * 0.2}s`);
+          el.style.setProperty('--drift', `${drift}px`);
+          el.style.setProperty('--spin', `${spin}deg`);
+
+          el.addEventListener('animationend', (e) => {
+            if (e.animationName !== 'flowerFall') return;
+            el.remove();
+            remaining--;
+            if (remaining === 0 && onDone) onDone();
+          });
+
+          el.classList.add('fall');
+        });
+      }
+
+      bloom();
     }
   </script>
 </body>
