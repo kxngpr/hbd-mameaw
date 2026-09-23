@@ -580,6 +580,31 @@
       100% { transform: translateX(45%) rotate(0deg); }
     }
 
+    /* ปุ่มดูอีกครั้ง */
+    .replay-btn {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.92);
+      color: #ff477e;
+      border: 2px solid #ff477e;
+      padding: 8px 22px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 71, 126, 0.35);
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .replay-btn:hover {
+      background: #ff477e;
+      color: #fff;
+    }
+
     @media (max-width: 600px) {
       .slider-strip { height: 95px; }
       .strip-img { width: 70px; height: 70px; }
@@ -656,6 +681,7 @@
     </div>
 
     <div class="center-photo-container">
+      <button class="replay-btn" onclick="replayAll()">🔄 ดูอีกครั้ง</button>
       <img src="us_photo.png" class="center-photo" alt="Us Photo">
 
       <svg class="curved-text-svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet">
@@ -896,6 +922,48 @@
       peekCat.classList.add('nudge');
       setTimeout(() => peekCat.classList.remove('nudge'), 1200);
     }, 7000);
+
+    /* ===== ปุ่มดูอีกครั้ง: รีเซ็ตทุกอย่างกลับไปหน้าแรก (เพลงเล่นต่อ) ===== */
+    const initialState = {
+      title: introTitle.textContent,
+      subtitle: introSubtitle.textContent,
+      photo: photoContainer.innerHTML,
+      btn: nextBtn.textContent,
+      hint: hint.textContent
+    };
+
+    function replayAll() {
+      closePhotoModal();
+      finalPage.classList.remove('show');
+      cardMessage.classList.remove('show');
+      cardMessage.scrollTop = 0;
+
+      clearInterval(timerInterval);
+      timerInterval = null;
+
+      introStep = 0;
+      mainStep = 0;
+
+      peekCat.classList.remove('show', 'nudge', 'pounce');
+
+      interactiveBox.classList.remove('fall-together');
+      interactiveBox.style.display = 'none';
+      interactiveBox.style.opacity = '0';
+      interactiveBox.style.width = '';
+      mainImg.src = 'cake_1.png';
+      hint.textContent = initialState.hint;
+      hint.style.display = 'none';
+
+      introTitle.textContent = initialState.title;
+      introSubtitle.textContent = initialState.subtitle;
+      photoContainer.innerHTML = initialState.photo;
+      nextBtn.textContent = initialState.btn;
+
+      introCard.style.display = '';
+      introCard.style.opacity = '0';
+      void introCard.offsetWidth;
+      introCard.style.opacity = '1';
+    }
 
     function showFinalPage() {
       cardMessage.classList.remove('show');
