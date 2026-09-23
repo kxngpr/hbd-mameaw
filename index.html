@@ -15,6 +15,7 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     body {
@@ -27,7 +28,7 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      font-family: 'Mitr', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Mitr', sans-serif;
       position: relative;
     }
 
@@ -35,33 +36,25 @@
       position: fixed;
       top: 15px;
       right: 15px;
-      z-index: 300;
+      z-index: 500;
       display: flex;
       align-items: center;
       gap: 10px;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(8px);
-      padding: 8px 16px 8px 10px;
+      padding: 8px 16px;
       border-radius: 30px;
       box-shadow: 0 4px 15px rgba(255, 71, 126, 0.2);
       border: 1px solid #ffd1dc;
       cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .music-control:hover {
-      transform: scale(1.05);
     }
 
     .vinyl-disc {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       background: #222;
       border-radius: 50%;
       border: 2px solid #ff477e;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       position: relative;
       animation: spinVinyl 3s linear infinite;
       animation-play-state: paused;
@@ -69,8 +62,10 @@
 
     .vinyl-disc::after {
       content: '';
-      width: 10px;
-      height: 10px;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 8px;
       background: #ff477e;
       border-radius: 50%;
     }
@@ -86,60 +81,46 @@
     }
 
     .intro-card {
-      background: transparent;
-      padding: 0;
       text-align: center;
       width: 95%;
-      max-width: 900px;
-      z-index: 10;
+      max-width: 800px;
+      z-index: 200;
       transition: opacity 0.4s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
+      cursor: pointer;
     }
 
     .intro-title {
       color: #ff477e;
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: bold;
-      margin-bottom: 4px;
-      line-height: 1.2;
-      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+      margin-bottom: 5px;
     }
 
     .intro-subtitle {
       color: #725e64;
-      font-size: 1.25rem;
-      line-height: 1.3;
-    }
-
-    #photoContainer {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
     }
 
     .calendar-img-intro {
       width: 100%;
-      max-width: 850px;
-      max-height: 60vh;
+      max-width: 500px;
+      max-height: 50vh;
       object-fit: contain;
       border-radius: 20px;
-      margin-top: -20px;
-      margin-bottom: -10px;
-      display: block;
-      filter: drop-shadow(0 12px 25px rgba(255, 71, 126, 0.25));
+      margin-bottom: 15px;
     }
 
     .profile-img-intro {
-      width: 200px;
-      height: 200px;
+      width: 180px;
+      height: 180px;
       object-fit: cover;
       border-radius: 50%;
-      border: 5px solid #ff477e;
-      margin: 20px auto;
-      display: block;
+      border: 4px solid #ff477e;
+      margin: 15px auto;
       box-shadow: 0 10px 25px rgba(255, 71, 126, 0.25);
     }
 
@@ -147,85 +128,68 @@
       background-color: #ff477e;
       color: white;
       border: none;
-      padding: 14px 42px;
+      padding: 14px 40px;
       font-size: 1.2rem;
       border-radius: 30px;
       cursor: pointer;
-      transition: transform 0.2s, background-color 0.2s;
       box-shadow: 0 6px 18px rgba(255, 71, 126, 0.35);
       font-weight: bold;
-      position: relative;
-      z-index: 15;
-    }
-
-    .action-btn:hover {
-      transform: scale(1.06);
-      background-color: #ff2a6d;
+      z-index: 210;
     }
 
     .interactive-box {
       position: relative;
       cursor: pointer;
-      width: 420px;
+      width: 380px;
       max-width: 85vw;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease, width 0.4s ease;
-      z-index: 5;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 100;
       display: none;
       opacity: 0;
-    }
-
-    .interactive-box.fall-together {
-      animation: letterFallDown 2.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
-    }
-
-    @keyframes letterFallDown {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(140vh); opacity: 0; }
+      text-align: center;
     }
 
     .main-img {
       width: 100%;
       height: auto;
       display: block;
-      filter: drop-shadow(0 12px 25px rgba(0,0,0,0.12));
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
     }
 
     .hint-text {
-      margin-top: 20px;
-      color: #ff7096;
-      font-size: 1.15rem;
-      letter-spacing: 1px;
-      animation: pulse 1.8s infinite;
-      z-index: 5;
+      margin-top: 15px;
+      color: #ff477e;
+      font-size: 1.1rem;
+      font-weight: 600;
+      animation: pulse 1.5s infinite;
+      z-index: 100;
       display: none;
       text-align: center;
-      padding: 0 15px;
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 0.4; }
+      0%, 100% { opacity: 0.5; }
       50% { opacity: 1; }
     }
 
     .card-message {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -40%) scale(0.9);
+      transform: translate(-50%, -50%) scale(0.8);
       background: rgba(255, 255, 255, 0.98);
-      padding: 25px 20px 20px 20px;
-      border-radius: 28px;
-      box-shadow: 0 20px 40px rgba(255, 105, 180, 0.25);
+      padding: 25px 20px;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
       text-align: center;
-      width: 88%;
-      max-width: 480px;
-      max-height: 82vh;
+      width: 90%;
+      max-width: 450px;
+      max-height: 80vh;
       overflow-y: auto;
       opacity: 0;
       pointer-events: none;
-      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-      z-index: 100;
-      border: 2px solid #fff;
+      transition: all 0.5s ease;
+      z-index: 300;
     }
 
     .card-message.show {
@@ -234,68 +198,21 @@
       pointer-events: auto;
     }
 
-    .time-counter-box {
-      background: #fff0f5;
-      border: 1px dashed #ff8da1;
-      border-radius: 16px;
-      padding: 10px 8px;
-      margin-bottom: 15px;
-    }
-
-    .time-counter-title {
-      font-size: 0.8rem;
-      color: #725e64;
-      margin-bottom: 6px;
-    }
-
-    .time-units-grid {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-
-    .time-unit-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: #ffffff;
-      padding: 4px 6px;
-      border-radius: 8px;
-      min-width: 40px;
-      box-shadow: 0 2px 6px rgba(255, 71, 126, 0.1);
-    }
-
-    .unit-value {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 0.95rem;
-      font-weight: bold;
-      color: #ff2a6d;
-    }
-
-    .unit-label {
-      font-size: 0.65rem;
-      color: #888;
-    }
-
     .card-message h1 {
       color: #ff477e;
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-      font-weight: 800;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
     }
 
     .card-message p {
       color: #5c4b51;
-      font-size: 0.92rem;
-      line-height: 1.75;
+      font-size: 0.9rem;
+      line-height: 1.6;
       text-align: left;
     }
 
     .next-final-btn {
-      display: inline-block;
-      margin-top: 20px;
+      margin-top: 15px;
       background-color: #ff477e;
       color: white;
       border: none;
@@ -304,239 +221,36 @@
       border-radius: 20px;
       cursor: pointer;
       font-weight: bold;
-      box-shadow: 0 4px 12px rgba(255, 71, 126, 0.3);
-      transition: transform 0.2s, background-color 0.2s;
     }
 
-    .next-final-btn:hover {
-      transform: scale(1.05);
-      background-color: #ff2a6d;
-    }
-
-    .final-page {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      z-index: 250;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 1s ease;
-      background-color: #000;
-      overflow: hidden;
-    }
-
-    .final-page.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .center-photo-container {
-      position: relative;
-      width: 100%;
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    .center-photo {
-      max-width: 90%;
-      max-height: 80%;
-      object-fit: contain;
-      display: block;
-      border-radius: 16px;
-    }
-
-    .curved-text-svg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    .curved-text {
-      font-family: 'Sriracha', 'Mitr', cursive, sans-serif;
-      font-size: 32px;
-      font-weight: bold;
-      fill: #ff3385;
-      stroke: #ffffff;
-      stroke-width: 2px;
-      paint-order: stroke fill;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
-    }
-
-    .slider-strip {
-      width: 100%;
-      height: 110px;
-      background-color: #000;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      position: relative;
-      z-index: 20;
-    }
-
-    .slider-track {
-      display: flex;
-      gap: 12px;
-      width: max-content;
-      will-change: transform;
-    }
-
-    .slide-top {
-      animation: scrollLeft 18s linear infinite;
-    }
-
-    .slide-bottom {
-      animation: scrollRight 18s linear infinite;
-    }
-
-    @keyframes scrollLeft {
-      0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(-50%, 0, 0); }
-    }
-
-    @keyframes scrollRight {
-      0% { transform: translate3d(-50%, 0, 0); }
-      100% { transform: translate3d(0, 0, 0); }
-    }
-
-    .strip-img {
-      width: 85px;
-      height: 85px;
-      border-radius: 14px;
-      object-fit: cover;
-      border: 2px solid #ff477e;
-      background-color: #ffe6ee;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .strip-img:hover {
-      transform: scale(1.08);
-    }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.82);
-      backdrop-filter: blur(6px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 400;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-content {
-      background: #ffffff;
-      padding: 22px;
-      border-radius: 24px;
-      text-align: center;
-      max-width: 340px;
-      width: 85%;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      transform: scale(0.8);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border: 3px solid #ffccd5;
-    }
-
-    .modal-overlay.active .modal-content {
-      transform: scale(1);
-    }
-
-    .modal-img {
-      width: 100%;
-      max-height: 280px;
-      object-fit: cover;
-      border-radius: 16px;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-      margin-bottom: 15px;
-    }
-
-    .modal-caption {
-      color: #ff477e;
-      font-size: 1.05rem;
-      font-weight: 600;
-      line-height: 1.5;
-      margin-bottom: 15px;
-    }
-
-    .close-btn {
-      background-color: #ff477e;
-      color: white;
-      border: none;
-      padding: 8px 24px;
-      border-radius: 20px;
-      font-size: 0.95rem;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(255, 71, 126, 0.3);
-    }
-
-    /* CSS สำหรับดอกไม้ขนาดใหญ่ยักษ์ บานแน่นจากตรงกลางทึบสนิทไม่มีรูโหว่ */
     .flower-item {
       position: fixed;
-      width: 240px;
-      height: 240px;
+      width: 220px;
+      height: 220px;
       top: 50%;
       left: 50%;
-      margin-top: -120px;
-      margin-left: -120px;
+      margin-top: -110px;
+      margin-left: -110px;
       pointer-events: none;
-      z-index: 60;
+      z-index: 400;
       will-change: transform, opacity;
-      animation: popBloomBig 3.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation: popBloom 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
 
-    @keyframes popBloomBig {
+    @keyframes popBloom {
       0% {
         transform: translate(var(--tx), var(--ty)) scale(0) rotate(0deg);
         opacity: 0;
       }
-      12% {
-        opacity: 1;
-      }
+      20% { opacity: 1; }
       80% {
         opacity: 1;
-        transform: translate(var(--tx), var(--ty)) scale(1.6) rotate(var(--rot));
+        transform: translate(var(--tx), var(--ty)) scale(1.8) rotate(var(--rot));
       }
       100% {
         opacity: 0;
-        transform: translate(var(--tx), var(--ty)) scale(2.2) rotate(calc(var(--rot) + 45deg));
+        transform: translate(var(--tx), var(--ty)) scale(2.2) rotate(calc(var(--rot) + 40deg));
       }
-    }
-
-    @media (max-width: 600px) {
-      .flower-item {
-        width: 180px;
-        height: 180px;
-        margin-top: -90px;
-        margin-left: -90px;
-      }
-      .slider-strip { height: 95px; }
-      .strip-img { width: 70px; height: 70px; }
-      .curved-text { font-size: 24px; }
     }
   </style>
 </head>
@@ -551,98 +265,33 @@
 
   <div class="intro-card" id="introCard">
     <div class="intro-title" id="introTitle">เอ๊ะ... วันนี้วันอะไรน้าาาา</div>
-    <div class="intro-subtitle" id="introSubtitle">อ๋อออ วันจันทร์นี่นาา ได้เวลาไปทำงานน </div>
-    
+    <div class="intro-subtitle" id="introSubtitle">อ๋อออ วันจันทร์นี่นาา ได้เวลาไปทำงานน</div>
     <div id="photoContainer">
-      <img src="sep.png" class="calendar-img-intro" alt="September Calendar">
+      <img src="sep.png" class="calendar-img-intro" alt="Calendar">
     </div>
-
     <button class="action-btn" id="nextBtn">ถัดไป ➔</button>
   </div>
 
   <div class="interactive-box" id="interactiveBox">
-    <img id="mainImg" class="main-img" src="cake_1.png" alt="Birthday Cake">
+    <img id="mainImg" class="main-img" src="cake_1.png" alt="Cake">
   </div>
   
-  <div class="hint-text" id="hint"> แตะที่เค้กเพื่อเป่าเทียน อธิษฐานก่อนเป่าด้วยนะ </div>
+  <div class="hint-text" id="hint">แตะที่เค้กเพื่อเป่าเทียน อธิษฐานก่อนเป่าด้วยนะ</div>
 
   <div class="card-message" id="cardMessage">
-    <div class="time-counter-box">
-      <div class="time-counter-title"> มะเหมี่ยวใช้ชีวิตอย่างดีมาแล้ว </div>
-      <div class="time-units-grid">
-        <div class="time-unit-item"><span class="unit-value" id="valYears">0</span><span class="unit-label">ปี</span></div>
-        <div class="time-unit-item"><span class="unit-value" id="valMonths">0</span><span class="unit-label">เดือน</span></div>
-        <div class="time-unit-item"><span class="unit-value" id="valDays">0</span><span class="unit-label">วัน</span></div>
-        <div class="time-unit-item"><span class="unit-value" id="valHours">0</span><span class="unit-label">ชม.</span></div>
-        <div class="time-unit-item"><span class="unit-value" id="valMins">0</span><span class="unit-label">นาที</span></div>
-        <div class="time-unit-item"><span class="unit-value" id="valSecs">0</span><span class="unit-label">วิ</span></div>
-      </div>
-    </div>
-
     <h1>Happy Birthday คับมะเหมี่ยว 🎉</h1>
     <p>
-      Happy birthdayนะคับมะเหมี่ยว เขินๆนิดๆไม่เคยทำอะไรแบบนี้55665555 แล้วเก่งก็ไม่มีของขวัญอะไรจะให้เลย อวยพรก็ไม่เก่ง แต่เก่งตั้งใจทำอันนี้ให้มะเหมี่ยวเลย เก่งขอให้มะเหมี่ยวมีความสุขมากๆ สุขภาพก็แข็งแรง 556555คำอวยพรยอดฮิตมั้ยนะอันนี้ แต่เก่งก็อยากอวยพรนะ แล้วก็เก่งอยากให้มะเหมี่ยวอยู่กับเก่งแบบนี้ไปนานๆเรื่อยๆเลยแ่อยากให้เป็นเรื่อยๆที่พัฒนาขึ้นนะ เก่งคุยกับมะเหมี่ยวแล้วมีความสุขมากแฮปปี้สุดๆ ถึงจะบอกไปเยอะแล้วก็เถอะแต่ก็ยังอยากบอกนะมะเหมี่ยวอย่าเพิ่งเบื่อกัน แล้วเก่งก็ขอให้มะเหมี่ยวเป็นผักใบสีเขียวในทู๊กกกกวันเลย ขอให้ภูมิแพ้หายไปเลยด้วย ไอกระเพาะปัสวะอักเสบก็หายด้วย อะไรไม่ดีออกไปให้หมดๆเลย นึกไม่ออกแล้วแฮะ5555566 ก็ขอให้มะเหมี่ยวมีความสุขมากๆนะคับ อยู่ด้วยกันไปนานๆนะ ถึงจะไม่เกี่ยวกับวันเกิดก็เถอะ556555 เก่งชอบมะเหมี่ยวมากๆๆๆๆ Happy birthday คับมะเหมี่ยว
+      Happy birthdayนะคับมะเหมี่ยว ขอให้มีความสุขมากๆ สุขภาพแข็งแรง ขอให้มะเหมี่ยวเป็นผักใบสีเขียวในทู๊กกกกวันเลย ภูมิแพ้หาย กระเพาะปัสสาวะอักเสบหายด้วยนะคับ ชอบมะเหมี่ยวมากๆๆๆๆ ❤️
     </p>
-
-    <button class="next-final-btn" onclick="showFinalPage()">มีอะไรจะบอกอีกนิด ➔</button>
-  </div>
-
-  <div class="final-page" id="finalPage">
-    <div class="slider-strip">
-      <div class="slider-track slide-top">
-        <img src="us_photo.png" class="strip-img" onclick="openPhotoModal('us_photo.png', 'แล้วก็ขอให้มะเหมี่ยวอยู่กับเก่งไปนานๆเลยนะคับ')">
-        <img src="1.png" class="strip-img" onclick="openPhotoModal('1.png', 'ขอให้มะเหมี่ยวเป็นผักใบเขียวทู๊กกกกกวันไม่มีสีอะไรมาปน')">
-        <img src="2.png" class="strip-img" onclick="openPhotoModal('2.png', 'ขอให้มะเหมี่ยวแฮปปี้ในทุกวันเลย')">
-        <img src="3.png" class="strip-img" onclick="openPhotoModal('3.png', 'ขอให้มะเหมี่ยวกินอิ่มนอนอิ่มทุกวันด้วย')">
-        <img src="4.png" class="strip-img" onclick="openPhotoModal('4.png', 'ขอให้มะเหมี่ยวร่างกายแข็งแรงมากๆๆๆๆๆๆๆ')">
-        <img src="5.png" class="strip-img" onclick="openPhotoModal('5.png', 'ขอให้มะเหมี่ยวมีความสุขมากๆ นะคับ')">
-        <img src="us_photo.png" class="strip-img" onclick="openPhotoModal('us_photo.png', 'แล้วก็ขอให้มะเหมี่ยวอยู่กับเก่งไปนานๆเลยนะคับ')">
-        <img src="1.png" class="strip-img" onclick="openPhotoModal('1.png', 'ขอให้มะเหมี่ยวเป็นผักใบเขียวทู๊กกกกกวันไม่มีสีอะไรมาปน')">
-        <img src="2.png" class="strip-img" onclick="openPhotoModal('2.png', 'ขอให้มะเหมี่ยวแฮปปี้ในทุกวันเลย')">
-        <img src="3.png" class="strip-img" onclick="openPhotoModal('3.png', 'ขอให้มะเหมี่ยวกินอิ่มนอนอิ่มทุกวันด้วย')">
-        <img src="4.png" class="strip-img" onclick="openPhotoModal('4.png', 'ขอให้มะเหมี่ยวร่างกายแข็งแรงมากๆๆๆๆๆๆๆ')">
-        <img src="5.png" class="strip-img" onclick="openPhotoModal('5.png', 'ขอให้มะเหมี่ยวมีความสุขมากๆ นะคับ')">
-      </div>
-    </div>
-
-    <div class="center-photo-container">
-      <img src="us_photo.png" class="center-photo" alt="Us Photo">
-      
-      <svg class="curved-text-svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet">
-        <path id="textCurve" d="M 200,140 Q 500,30 800,150" fill="transparent" />
-        <text class="curved-text">
-          <textPath href="#textCurve" startOffset="50%" text-anchor="middle">
-            อยู่กับเก่งไปนานๆเลยนะ
-          </textPath>
-        </text>
-      </svg>
-    </div>
-
-    <div class="slider-strip">
-      <div class="slider-track slide-bottom">
-        <img src="3.png" class="strip-img" onclick="openPhotoModal('3.png', 'ขอให้มะเหมี่ยวกินอิ่มนอนอิ่มทุกวันด้วย')">
-        <img src="4.png" class="strip-img" onclick="openPhotoModal('4.png', 'ขอให้มะเหมี่ยวร่างกายแข็งแรงมากๆๆๆๆๆๆๆ')">
-        <img src="us_photo.png" class="strip-img" onclick="openPhotoModal('us_photo.png', 'แล้วก็ขอให้มะเหมี่ยวอยู่กับเก่งไปนานๆเลยนะคับ')">
-        <img src="5.png" class="strip-img" onclick="openPhotoModal('5.png', 'ขอให้มะเหมี่ยวมีความสุขมากๆ นะคับ')">
-        <img src="1.png" class="strip-img" onclick="openPhotoModal('1.png', 'ขอให้มะเหมี่ยวเป็นผักใบเขียวทู๊กกกกกวันไม่มีสีอะไรมาปน')">
-        <img src="2.png" class="strip-img" onclick="openPhotoModal('2.png', 'ขอให้มะเหมี่ยวแฮปปี้ในทุกวันเลย')">
-        <img src="3.png" class="strip-img" onclick="openPhotoModal('3.png', 'ขอให้มะเหมี่ยวกินอิ่มนอนอิ่มทุกวันด้วย')">
-        <img src="4.png" class="strip-img" onclick="openPhotoModal('4.png', 'ขอให้มะเหมี่ยวร่างกายแข็งแรงมากๆๆๆๆๆๆๆ')">
-        <img src="us_photo.png" class="strip-img" onclick="openPhotoModal('us_photo.png', 'แล้วก็ขอให้มะเหมี่ยวอยู่กับเก่งไปนานๆเลยนะคับ')">
-        <img src="5.png" class="strip-img" onclick="openPhotoModal('5.png', 'ขอให้มะเหมี่ยวมีความสุขมากๆ นะคับ')">
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="photoModal" onclick="closePhotoModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <img id="modalImg" class="modal-img" src="" alt="Expanded Photo">
-      <div id="modalCaption" class="modal-caption"></div>
-      <button class="close-btn" onclick="closePhotoModal()">ปิด ✖</button>
-    </div>
+    <button class="next-final-btn" id="finalBtn">เรียบร้อย ➔</button>
   </div>
 
   <script>
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const vinylDisc = document.getElementById('vinylDisc');
+    const musicStatus = document.getElementById('musicStatus');
+
     const introCard = document.getElementById('introCard');
     const introTitle = document.getElementById('introTitle');
     const introSubtitle = document.getElementById('introSubtitle');
@@ -653,156 +302,122 @@
     const mainImg = document.getElementById('mainImg');
     const hint = document.getElementById('hint');
     const cardMessage = document.getElementById('cardMessage');
-    const finalPage = document.getElementById('finalPage');
-
-    const bgMusic = document.getElementById('bgMusic');
-    const musicBtn = document.getElementById('musicBtn');
-    const vinylDisc = document.getElementById('vinylDisc');
-    const musicStatus = document.getElementById('musicStatus');
-
-    const photoModal = document.getElementById('photoModal');
-    const modalImg = document.getElementById('modalImg');
-    const modalCaption = document.getElementById('modalCaption');
 
     const flowerSrcs = [
       'flower_1.png', 'flower_2.png', 'flower_3.png', 'flower_4.png',
       'flower_5.png', 'flower_6.png', 'flower_7.png', 'flower_8.png'
     ];
 
-    flowerSrcs.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
-
     let introStep = 0;
     let mainStep = 0;
     let isPlaying = false;
-    let timerInterval = null;
 
-    function toggleMusic() {
+    function playAudioSafely() {
+      bgMusic.play().then(() => {
+        vinylDisc.style.animationPlayState = 'running';
+        musicStatus.innerText = '🎵 กำลังเล่น';
+        isPlaying = true;
+      }).catch(err => {
+        console.log("Audio play blocked/failed:", err);
+      });
+    }
+
+    musicBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       if (isPlaying) {
         bgMusic.pause();
         vinylDisc.style.animationPlayState = 'paused';
-        musicStatus.innerText = '🔇 ปิดเสียงอยู่';
+        musicStatus.innerText = '🔇 ปิดเสียง';
         isPlaying = false;
       } else {
-        bgMusic.play().then(() => {
-          vinylDisc.style.animationPlayState = 'running';
-          musicStatus.innerText = '🎵 กำลังเล่น';
-          isPlaying = true;
-        }).catch(() => {});
+        playAudioSafely();
       }
-    }
+    });
 
-    musicBtn.addEventListener('click', toggleMusic);
-
-    nextBtn.addEventListener('click', () => {
-      if (!isPlaying) {
-        toggleMusic();
-      }
+    function handleNext() {
+      playAudioSafely();
 
       if (introStep === 0) {
         introStep = 1;
-        introTitle.innerText = "เอ้ย ไม่ช่ายยย! ";
-        introSubtitle.innerHTML = "วันนี้วันเกิดคนนี้ต่างหากก";
-        
-        photoContainer.innerHTML = `
-          <img src="4.png" class="profile-img-intro" alt="Birthday Person">
-        `;
-        
-        nextBtn.innerText = " ไปเป่าเค้กกัน ";
+        introTitle.innerText = "เอ้ย ไม่ช่ายยย!";
+        introSubtitle.innerText = "วันนี้วันเกิดคนนี้ต่างหากก";
+        photoContainer.innerHTML = `<img src="4.png" class="profile-img-intro" alt="Profile">`;
+        nextBtn.innerText = "ไปเป่าเค้กกัน ➔";
         return;
       }
 
       if (introStep === 1) {
         introCard.style.opacity = '0';
-        
         setTimeout(() => {
           introCard.style.display = 'none';
           interactiveBox.style.display = 'block';
           hint.style.display = 'block';
-
-          setTimeout(() => {
-            interactiveBox.style.opacity = '1';
-          }, 50);
+          setTimeout(() => { interactiveBox.style.opacity = '1'; }, 50);
         }, 400);
       }
-    });
+    }
+
+    nextBtn.addEventListener('click', handleNext);
 
     interactiveBox.addEventListener('click', () => {
+      playAudioSafely();
+
       if (mainStep === 0) {
         mainStep = 1;
         mainImg.src = 'cake_2.png';
-        hint.innerText = ' สาธุๆๆ ไม่ว่ามะเหมี่ยวขออะไรขอให้เป็นจริงทั้งหมดเลยยยยยยย ';
+        hint.innerText = 'สาธุๆๆ ขอให้สมหวังทุกประการเลยนะ!';
 
         setTimeout(() => {
           interactiveBox.style.opacity = '0';
-          
           setTimeout(() => {
             mainStep = 2;
             mainImg.src = 'image_c65a01.png';
-            interactiveBox.style.width = '480px';
-            hint.innerText = ' มะเหมี่ยวลองแตะจดหมายดูเก่งมีอะไรจะบอกด้วยล่ะ ';
+            hint.innerText = 'แตะจดหมายเพื่อเปิดอ่านดูสิ';
             interactiveBox.style.opacity = '1';
-          }, 500);
-
-        }, 1500);
-
+          }, 400);
+        }, 1200);
         return;
       }
 
       if (mainStep === 2) {
         mainStep = 3;
         hint.style.display = 'none';
-        
         mainImg.src = 'image_c65cc2.png';
-        spawnZoomingFlowers();
-
-        setTimeout(() => {
-          interactiveBox.classList.add('fall-together');
-        }, 2000);
+        spawnFlowers();
 
         setTimeout(() => {
           cardMessage.classList.add('show');
-          startDetailedTimer();
-        }, 4000);
+        }, 2200);
       }
     });
 
-    function showFinalPage() {
-      cardMessage.classList.remove('show');
-      finalPage.classList.add('show');
+    function spawnFlowers() {
+      const total = 200;
+      let count = 0;
+
+      function add() {
+        if (count >= total) return;
+        const img = document.createElement('img');
+        img.src = flowerSrcs[count % flowerSrcs.length];
+        img.className = 'flower-item';
+
+        const angle = count * 137.5;
+        const radius = 18 * Math.sqrt(count);
+        const x = radius * Math.cos(angle * Math.PI / 180);
+        const y = radius * Math.sin(angle * Math.PI / 180);
+
+        img.style.setProperty('--tx', `${x}px`);
+        img.style.setProperty('--ty', `${y}px`);
+        img.style.setProperty('--rot', `${(count * 30) % 360}deg`);
+
+        document.body.appendChild(img);
+        setTimeout(() => img.remove(), 2800);
+
+        count++;
+        setTimeout(add, 12);
+      }
+      add();
     }
-
-    function startDetailedTimer() {
-      const birthDate = new Date(2003, 8, 28, 0, 0, 0);
-
-      const elYears = document.getElementById('valYears');
-      const elMonths = document.getElementById('valMonths');
-      const elDays = document.getElementById('valDays');
-      const elHours = document.getElementById('valHours');
-      const elMins = document.getElementById('valMins');
-      const elSecs = document.getElementById('valSecs');
-
-      function update() {
-        const now = new Date();
-
-        let years = now.getFullYear() - birthDate.getFullYear();
-        let months = now.getMonth() - birthDate.getMonth();
-        let days = now.getDate() - birthDate.getDate();
-        let hours = now.getHours() - birthDate.getHours();
-        let minutes = now.getMinutes() - birthDate.getMinutes();
-        let seconds = now.getSeconds() - birthDate.getSeconds();
-
-        if (seconds < 0) {
-          seconds += 60;
-          minutes--;
-        }
-        if (minutes < 0) {
-          minutes += 60;
-          hours--;
-        }
-        if (hours < 0) {
-          hours += 24;
-          days--;
-        }
+  </script>
+</body>
+</html>
