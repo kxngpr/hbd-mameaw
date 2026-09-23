@@ -534,6 +534,52 @@
       }
     }
 
+    /* หัวใจเด้งตอนแตะ */
+    .tap-heart {
+      position: fixed;
+      z-index: 600;
+      pointer-events: none;
+      user-select: none;
+      transform: translate(-50%, -50%);
+      animation: heartFloat 1.1s ease-out forwards;
+    }
+
+    @keyframes heartFloat {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+      15% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--hx)), calc(-50% - var(--hy))) scale(0.9);
+      }
+    }
+
+    /* แมวน้อยโผล่ที่ขอบจอขวา */
+    .peek-cat {
+      position: fixed;
+      right: 0;
+      top: 58%;
+      z-index: 420;
+      padding: 8px;
+      font-size: 3.4rem;
+      line-height: 1;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      transform: translateX(110%);
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 4px 8px rgba(255, 71, 126, 0.3));
+    }
+
+    .peek-cat.show { transform: translateX(45%); }
+    .peek-cat.show.nudge { transform: translateX(10%); }
+    .peek-cat.pounce { animation: catPounce 0.5s ease; }
+
+    @keyframes catPounce {
+      0% { transform: translateX(45%) rotate(0deg); }
+      40% { transform: translateX(-20%) rotate(-12deg); }
+      100% { transform: translateX(45%) rotate(0deg); }
+    }
+
     @media (max-width: 600px) {
       .slider-strip { height: 95px; }
       .strip-img { width: 70px; height: 70px; }
@@ -543,6 +589,8 @@
   </style>
 </head>
 <body>
+
+  <div class="peek-cat" id="peekCat">🐱</div>
 
   <audio id="bgMusic" src="khongkwan_thetoys.mp3" loop preload="auto"></audio>
 
@@ -570,7 +618,7 @@
 
   <div class="card-message" id="cardMessage">
     <div class="time-counter-box">
-      <div class="time-counter-title"> มะเหมี่ยวเติบโตมาเป็นมะเหมี่ยวในวัย </div>
+      <div class="time-counter-title"> มะเหมี่ยวใช้ชีวิตอย่างดีมาแล้ว </div>
       <div class="time-units-grid">
         <div class="time-unit-item"><span class="unit-value" id="valYears">0</span><span class="unit-label">ปี</span></div>
         <div class="time-unit-item"><span class="unit-value" id="valMonths">0</span><span class="unit-label">เดือน</span></div>
@@ -581,7 +629,7 @@
       </div>
     </div>
 
-    <h1>Happy Birthday คับมะเหมี่ยว </h1>
+    <h1>Happy Birthday คับมะเหมี่ยว 🎉</h1>
     <p>
       Happy birthdayนะคับมะเหมี่ยว เขินๆนิดๆไม่เคยทำอะไรแบบนี้55665555 แล้วเก่งก็ไม่มีของขวัญอะไรจะให้เลย อวยพรก็ไม่เก่ง แต่เก่งตั้งใจทำอันนี้ให้มะเหมี่ยวเลย เก่งขอให้มะเหมี่ยวมีความสุขมากๆ สุขภาพก็แข็งแรง 556555คำอวยพรยอดฮิตมั้ยนะอันนี้ แต่เก่งก็อยากอวยพรนะ แล้วก็เก่งอยากให้มะเหมี่ยวอยู่กับเก่งแบบนี้ไปนานๆเรื่อยๆเลยแ่อยากให้เป็นเรื่อยๆที่พัฒนาขึ้นนะ เก่งคุยกับมะเหมี่ยวแล้วมีความสุขมากแฮปปี้สุดๆ ถึงจะบอกไปเยอะแล้วก็เถอะแต่ก็ยังอยากบอกนะมะเหมี่ยวอย่าเพิ่งเบื่อกัน แล้วเก่งก็ขอให้มะเหมี่ยวเป็นผักใบสีเขียวในทู๊กกกกวันเลย ขอให้ภูมิแพ้หายไปเลยด้วย ไอกระเพาะปัสวะอักเสบก็หายด้วย อะไรไม่ดีออกไปให้หมดๆเลย นึกไม่ออกแล้วแฮะ5555566 ก็ขอให้มะเหมี่ยวมีความสุขมากๆนะคับ อยู่ด้วยกันไปนานๆนะ ถึงจะไม่เกี่ยวกับวันเกิดก็เถอะ556555 เก่งชอบมะเหมี่ยวมากๆๆๆๆ Happy birthday คับมะเหมี่ยว
     </p>
@@ -720,6 +768,7 @@
           introCard.style.display = 'none';
           interactiveBox.style.display = 'block';
           hint.style.display = 'block';
+          setTimeout(() => peekCat.classList.add('show'), 1500);
 
           setTimeout(() => {
             interactiveBox.style.opacity = '1';
@@ -770,6 +819,83 @@
         );
       }
     });
+
+    /* ===== หัวใจเด้งตอนแตะ + แมวน้อย ===== */
+    const peekCat = document.getElementById('peekCat');
+    const heartEmojis = ['💗', '💖', '💕', '🩷'];
+    let audioCtx = null;
+
+    function spawnHearts(x, y, count) {
+      for (let k = 0; k < count; k++) {
+        const h = document.createElement('span');
+        h.className = 'tap-heart';
+        h.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+        h.style.left = (x + (Math.random() - 0.5) * 30) + 'px';
+        h.style.top = (y + (Math.random() - 0.5) * 20) + 'px';
+        h.style.fontSize = (14 + Math.random() * 14) + 'px';
+        h.style.setProperty('--hx', ((Math.random() - 0.5) * 80) + 'px');
+        h.style.setProperty('--hy', (70 + Math.random() * 70) + 'px');
+        h.style.animationDelay = (k * 0.05) + 's';
+        h.addEventListener('animationend', () => h.remove());
+        document.body.appendChild(h);
+      }
+    }
+
+    document.addEventListener('pointerdown', (e) => {
+      spawnHearts(e.clientX, e.clientY, 4);
+    });
+
+    // เสียงเหมียว สังเคราะห์ด้วย Web Audio (ไม่ต้องใช้ไฟล์เสียง)
+    function playMeow() {
+      try {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        if (!audioCtx) audioCtx = new AC();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const t = audioCtx.currentTime;
+
+        const osc = audioCtx.createOscillator();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(520, t);
+        osc.frequency.linearRampToValueAtTime(920, t + 0.18);
+        osc.frequency.linearRampToValueAtTime(640, t + 0.55);
+
+        const filt = audioCtx.createBiquadFilter();
+        filt.type = 'bandpass';
+        filt.Q.value = 3;
+        filt.frequency.setValueAtTime(900, t);
+        filt.frequency.linearRampToValueAtTime(1800, t + 0.2);
+        filt.frequency.linearRampToValueAtTime(1000, t + 0.55);
+
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(0.7, t + 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+
+        osc.connect(filt);
+        filt.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + 0.65);
+      } catch (err) {}
+    }
+
+    peekCat.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      playMeow();
+      spawnHearts(e.clientX, e.clientY - 20, 8);
+      peekCat.classList.remove('pounce');
+      void peekCat.offsetWidth;
+      peekCat.classList.add('pounce');
+    });
+    peekCat.addEventListener('animationend', () => peekCat.classList.remove('pounce'));
+
+    // ทุก 7 วินาที แมวโผล่หัวออกมาอีกนิดให้คนเห็น
+    setInterval(() => {
+      if (!peekCat.classList.contains('show')) return;
+      peekCat.classList.add('nudge');
+      setTimeout(() => peekCat.classList.remove('nudge'), 1200);
+    }, 7000);
 
     function showFinalPage() {
       cardMessage.classList.remove('show');
